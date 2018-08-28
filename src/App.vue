@@ -4,15 +4,39 @@
       <span>Vue.js PWA</span>
     </header>
     <main>
-      <img src="./assets/logo.png" alt="Vue.js PWA">
       <router-view></router-view>
     </main>
   </div>
 </template>
 
 <script>
+  import {login,bookInfo} from './apis/index'
 export default {
-  name: 'app'
+  name: 'app',
+  data(){
+    return{
+      msg:11,
+      userInfo:{},
+    }
+  },
+  created(){
+    let self = this;
+    login({username : 'gym',password:'123456'}).then(function (response) {
+      if(response.code ===1){
+          self.userInfo = response.data.userInfo;
+          sessionStorage.setItem('token',JSON.stringify(response.data.token));
+      }
+    });
+
+  },
+  methods:{
+    lookBook(){
+      let self = this;
+      bookInfo({id:self.userInfo.id}).then(function (response) {
+        console.log(response)
+      })
+    }
+  }
 }
 </script>
 
