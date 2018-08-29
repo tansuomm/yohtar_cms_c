@@ -1,0 +1,33 @@
+// Core variables and mixins
+@import 'base/variables';
+@import 'base/mixins';
+@import 'base/function';
+
+// Reset
+@import 'base/reset';
+
+// Core CSS
+@import 'base/type';
+@import 'base/buttons';
+
+// Components
+
+// Utility classes
+@import 'base/utilities';
+
+// iconfont
+@import './../assets/fonts/iconfont.css';
+// media
+.el-dialog{
+    margin-top: 40vh !important;
+}
+@media only screen and (max-width: 768px){
+    .el-dialog{
+        width: 80%;
+        margin-top: 30vh !important;
+    }
+}
+
+.el-input__inner{
+    line-height: 1.15;
+}

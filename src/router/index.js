@@ -1,15 +1,18 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from '@/components/Hello'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
+      path: '/login',
+      component: resolve => require(['./../pages/Login.vue'], resolve)
+    },
+    {
       path: '/',
-      name: 'Hello',
-      component: Hello
-    }
+      component: resolve => require(['./../pages/Home.vue'], resolve)
+    },
+  
   ]
 })
