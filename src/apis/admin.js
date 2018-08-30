@@ -13,7 +13,7 @@ export function login(data) {
   });
 }
 /**
- * 用户登录
+ * 用户密码
  */
 export function modify(data) {
   return fetch({

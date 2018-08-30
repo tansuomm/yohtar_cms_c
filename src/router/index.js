@@ -13,6 +13,16 @@ export default new Router({
       path: '/',
       component: resolve => require(['./../pages/Home.vue'], resolve)
     },
-  
+    {
+      path: '/index',
+      component: resolve => require(['./../pages/Layout.vue'], resolve),
+      children: [
+        {
+          path: 'book',
+          name: 'book',
+          component: resolve => require(['./../pages/Book.vue'], resolve),
+        }
+      ]
+    }
   ]
 })

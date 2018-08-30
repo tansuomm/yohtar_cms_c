@@ -1,11 +1,7 @@
 <template>
   <div id="app">
     <div id="particles"></div>
-    <main>
-      <transition name="move" mode="out-in">
-          <router-view></router-view>
-      </transition>
-    </main>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -160,15 +156,5 @@
   canvas{
     display:block;
     vertical-align:bottom;
-  }
-  main{
-    position: relative;
-    width: 100%;
-    height: 100%;
-    padding: 30px;
-    overflow: hidden;
-    border-radius: 4px;
-    box-shadow: 1px 1px 20px 1px #12005a;
-    background: #ffffff;
   }
 </style>

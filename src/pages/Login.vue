@@ -1,126 +1,97 @@
 <template>
   <div class="login">
-    <div class="left">
-      a
-    </div>
-    <div class="right">
-      <el-form :model="loginRuleForm" :rules="loginRules" ref="loginRuleForm">
-                <el-form-item prop="name">
-                    <el-input
-                        v-model="loginRuleForm.name"
+    <b-card title="Content Manage System"
+            :img-src="headerImg"
+            img-alt="Image"
+            img-top
+            tag="article"
+            body-class="body"
+            class="text-center card">
+      <b-form @submit="onSubmit">
+
+        <b-form-group id="exampleInputGroup1"
+                      label="Your Name:"
+                      class="text-left"
+                      label-for="exampleInput1">
+          <b-form-input id="exampleInput1"
+                        type="text"
+                        v-model="loginForm.username"
+                        required
                         placeholder="手机号用户名或邮箱">
-                    </el-input>
-                </el-form-item>
-                <el-form-item prop="password">
-                    <el-input
-                        v-model="loginRuleForm.password"
+          </b-form-input>
+        </b-form-group>
+        <b-form-group id="exampleInputGroup2"
+                      label="Your Pass:"
+                      class="text-left"
+                      label-for="exampleInput2">
+          <b-form-input id="exampleInput2"
                         type="password"
-                        @keyup.native.enter="loginSubmitForm('loginRuleForm')"
-                        placeholder="用户密码">
-                    </el-input>
-                </el-form-item>
-                <el-form-item>
-                    <div class="password">
-                        <!-- <router-link to="forget">忘记密码</router-link> -->
-                        <el-checkbox style="margin-bottom: 20px" v-model="checked">记住密码</el-checkbox>
-                    </div>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="loginSubmitForm('loginRuleForm')"
-                               @keyup.enter.native="loginSubmitForm('loginRuleForm')" style="width:100%;">登录
-                    </el-button>
-                </el-form-item>
-            </el-form>
-    </div>
-  
+                        v-model="loginForm.password"
+                        required
+                        placeholder="登录密码">
+          </b-form-input>
+        </b-form-group>
+        <!--<b-form-group id="exampleGroup4">-->
+        <!--<b-form-checkbox v-model="checked">记住密码</b-form-checkbox>-->
+        <!--</b-form-group>-->
+        <b-button type="submit" class="btn" variant="primary">Sign Up</b-button>
+      </b-form>
+    </b-card>
   </div>
 </template>
 
 <script>
+  import {login} from './../apis/index'
 
   export default {
     name: "Login",
     data() {
       return {
+        headerImg:require('./../assets/login_header.jpg'),
         checked: false,
-                loginOrRegisterData: {
-                    isShow: true,
-                    activeName: ''
-                },
-                loginRuleForm: {
-                    name: '',
-                    password: '',
-                },
-                loginRules: {
-                    name: [
-                        {required: true, message: '请输手机号', trigger: 'blur'},
-                      
-                    ],
-                    password: [
-                        {required: true, message: '请输入密码', trigger: 'blur'},
-                       
-                    ]
-                },
-
-                disableCodeBtn: true,
+        loginForm: {
+          username: '',
+          password: ''
+        },
+        disableCodeBtn: true,
       }
     },
     created() {
     },
     mounted() {
-            // console.log('this.endTime:'+this.endTime)
-
-            if(this.$cookies.get("loginInfo") && this.$cookies.get("loginInfo") !== 'null'){
-                let str = this.$cookies.get("loginInfo");
-                this.loginRuleForm.name = str.split("-")[0];
-                this.loginRuleForm.password = str.split("-")[1];
-                this.checked = true;
-            }
-        },
+      // if (this.$cookies.get("u") && this.$cookies.get("u") !== 'null') {
+      //   this.loginForm.username = this.decode(this.$cookies.get("u"));
+      //   this.loginForm.password = this.decode(this.$cookies.get("p"));
+      //   this.checked = true;
+      // }
+    },
     methods: {
-    
-             loginRuleForm(formName) {
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        
-                    } else {
-                        return false;
-                    }
-                })
-            },
-            
-             user_login() {
-               
-                user_login(queryParam).then(data => {
-                    if (data.success) {
-                        sessionStorage.setItem("loginPhone", this.loginRuleForm.name);
-                        if (this.checked) {
-                            this.$cookies.set("loginInfo", this.loginRuleForm.name + '-' + this.loginRuleForm.password, '30d');
-                        } else {
-                            this.$cookies.set("loginInfo", null, -1);
-                        }
-                        this.$cookies.set("appLoginname", this.loginRuleForm.name, '7d');
-
-                        if (data.code == 0) {
-                            sessionStorage.setItem("bei_phone", data.data);
-                            this.$router.push({
-                                name: 'register'
-                            });
-                        } else if (data.data == 1) {
-                            this.$router.push({
-                                name: 'index'
-                            });
-                        }
-
-                    } else {
-                        this.$message({
-                            message: data.msg,
-                            type: 'error'
-                        });
-                    }
-
-                })
-            },
+      onSubmit(evt) {
+        evt.preventDefault();
+        let self = this;
+        login(self.loginForm).then(res => {
+          if (res.code === 1) {
+            // if (self.checked) {
+            //   self.$cookies.set("u", self.encode(self.loginForm.username), '30d');
+            //   self.$cookies.set("p", self.encode(self.loginForm.password), '30d');
+            // } else {
+            //   self.$cookies.set("u", null, -1);
+            //   self.$cookies.set("p", null, -1);
+            // }
+            sessionStorage.setItem('token',JSON.stringify(res.data.token));
+            sessionStorage.setItem('user',JSON.stringify(res.data.userInfo));
+            self.$router.push({
+              path: '/'
+            });
+          }
+        })
+      },
+      encode(str) {
+        return window.btoa(window.encodeURIComponent(str))
+      },
+      decode(str) {
+        return window.decodeURIComponent(window.atob(str))
+      }
     }
   }
 </script>
@@ -128,15 +99,27 @@
 <style scoped lang="scss">
   .login {
     display: flex;
+    align-items: center;
     height: 100%;
-    .left{
-      flex: 0 1 50%;
-      
-      background: red
+    width: 350px;
+    margin-left: auto;
+    .card{
+      img{
+        height: 200px;
+      }
+      .body{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+      }
+      .btn{
+        width: 100%;
+      }
     }
-    .right{
-     
-      flex: 0 1 50%
+  }
+  @media only screen and (max-width: 576px) {
+    .login {
+      width: auto;
     }
   }
 </style>
