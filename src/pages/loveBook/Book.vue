@@ -18,18 +18,18 @@
                       label-for="exampleInput2">
           <b-form-textarea id="textarea1"
                            v-model="bookInfo.content"
-                           :rows="6"
+                           :rows="8"
                            required
-                           :max-rows="32">
+                           :max-rows="12">
           </b-form-textarea>
         </b-form-group>
-        <b-button type="submit" class="btn" variant="primary">submit</b-button>
+        <b-button type="submit" class="btn" variant="primary">Save Note</b-button>
       </b-form>
     </div>
 </template>
 
 <script>
-  import {addBook, bookInfo} from "../apis";
+  import {addBook, bookInfo} from "../../apis/index";
 
     export default {
         name: "Book",
@@ -49,7 +49,7 @@
           lookBook(){
             let self =this;
             bookInfo({id:self.userInfo.id}).then(function (res) {
-              if(res.code ===1){
+              if(res.code ===1 &&  res.data){
                 self.bookInfo = res.data;
               }
             })
@@ -63,14 +63,8 @@
               content:self.bookInfo.content,
               nick:self.userInfo.nick
             };
-            addBook(params).then(function (res) {
-              if(res.code ===1){
-                if(res.data > 0){
-                  self.lookBook();
-                }else{
-                  // 暂未修改
-                }
-              }
+            addBook(params).then(function () {
+              self.lookBook();
             })
           }
       }

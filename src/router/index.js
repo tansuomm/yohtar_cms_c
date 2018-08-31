@@ -20,7 +20,7 @@ export default new Router({
         {
           path: 'book',
           name: 'book',
-          component: resolve => require(['./../pages/Book.vue'], resolve),
+          component: resolve => require(['../pages/loveBook/Book.vue'], resolve),
         }
       ]
     }
