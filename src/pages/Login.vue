@@ -14,7 +14,6 @@
                       class="text-left"
                       label-for="exampleInput1">
           <b-form-input id="exampleInput1"
-                        type="text"
                         v-model="loginForm.username"
                         required
                         placeholder="手机号用户名或邮箱">

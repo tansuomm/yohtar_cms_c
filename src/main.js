@@ -7,6 +7,7 @@ import NProgress from 'nprogress'
 import particles from 'particles.js'
 // import VueCookies from 'vue-cookies'
 import BootstrapVue from 'bootstrap-vue'
+import Notify from 'vue-notifyjs'
 import "babel-polyfill";
 import 'nprogress/nprogress.css';
 import './styles/index.scss'
@@ -15,7 +16,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 Vue.use(particles)
 // Vue.use(VueCookies)
 Vue.use(BootstrapVue)
-
+Vue.use(Notify)
 Vue.config.productionTip = false
 router.beforeEach((to, from, next) => {
   NProgress.start();

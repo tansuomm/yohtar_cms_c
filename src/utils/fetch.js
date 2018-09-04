@@ -1,7 +1,8 @@
 import axios from 'axios'
 import qs from 'qs'
-import miniToastr from 'mini-toastr'
-miniToastr.init();
+import { Message } from 'element-ui';
+// import miniToastr from 'mini-toastr'
+// miniToastr.init();
 // 创建axios实例
 const service = axios.create({
   baseURL: process.env.NODE_ENV === 'development' ? '/cms/': '/', // api的base_url
@@ -27,7 +28,12 @@ service.interceptors.request.use(config => {
 service.interceptors.response.use(
   response => {
     if(response.data.code !== 1){
-      miniToastr.info(response.data.msg, 'Oh,Sweet Heart',2000);
+      // miniToastr.info(response.data.msg, 'Oh,Sweet Heart',2000);
+      Message({
+        message: response.data.msg,
+        type: 'info',
+        duration:2000,
+      })
     }
     return response.data;
   },
@@ -77,7 +83,13 @@ service.interceptors.response.use(
       err.message = "连接到服务器失败"
     }
 
-    miniToastr.info(err.message, 'Oh,Sweet Heart',2000)
+    // miniToastr.info(err.message, 'Oh,Sweet Heart',2000)
+    Message.closeAll();
+    Message({
+      message: err.message,
+      type: 'info',
+      duration:2000,
+    })
     return Promise.reject(err)
   }
 )
