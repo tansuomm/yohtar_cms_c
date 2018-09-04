@@ -8,7 +8,6 @@
                       label="Love's Title:"
                       label-for="exampleInput1">
           <b-form-input id="exampleInput1"
-                        type="text"
                         v-model="bookInfo.title"
                         required>
           </b-form-input>
