@@ -1,5 +1,5 @@
 <template>
-    <div class="book">
+    <b-container fluid class="book">
       <div>
         <img src="" alt="">
       </div>
@@ -24,7 +24,7 @@
         </b-form-group>
         <b-button type="submit" class="btn" variant="primary">Save Note</b-button>
       </b-form>
-    </div>
+    </b-container>
 </template>
 
 <script>
@@ -72,6 +72,8 @@
 
 <style scoped lang="scss">
   .book{
+    height: 100%;
+    overflow: scroll;
     .btn{
       width: 100%;
     }

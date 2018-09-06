@@ -22,3 +22,14 @@ export function modify(data) {
     data
   });
 }
+
+/**
+ * 查看常量信息
+ */
+export function common(data) {
+  return fetch({
+    url:  'admin/common',
+    method: 'post',
+    data
+  });
+}

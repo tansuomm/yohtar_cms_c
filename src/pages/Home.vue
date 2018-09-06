@@ -6,8 +6,8 @@
         <p>爱情笔记</p>
       </b-col>
       <b-col cols="6" md="4" class="nav-item">
-        <i class="icon iconfont icon-book"></i>
-        <p>爱情笔记</p>
+        <i class="icon iconfont icon-shujucaiji" @click="toRouter('/index/craw')"></i>
+        <p>数据采集</p>
       </b-col>
       <b-col cols="6" md="4" class="nav-item">
         <i class="icon iconfont icon-book"></i>
@@ -62,6 +62,9 @@
         align-self: center;
         i {
           font-size: 3rem;
+          &:hover{
+            cursor: pointer;
+          }
         }
       }
     }

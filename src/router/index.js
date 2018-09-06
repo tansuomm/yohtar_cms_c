@@ -21,8 +21,14 @@ export default new Router({
           path: 'book',
           name: 'book',
           component: resolve => require(['../pages/loveBook/Book.vue'], resolve),
+        },
+        {
+          path: 'craw',
+          name: 'craw',
+          component: resolve => require(['../pages/crawData/craw.vue'], resolve),
         }
       ]
     }
+
   ]
 })
