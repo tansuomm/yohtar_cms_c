@@ -17,7 +17,7 @@ export function addCraw(data) {
  */
 export function crawList(data) {
   return fetch({
-    url:  'craw/craw',
+    url:  'craw/findCraws',
     method: 'post',
     data
   });
