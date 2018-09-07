@@ -32,6 +32,9 @@
              empty-text="暂无数据,快去添加一条吧"
              empty-filtered-text="无匹配查询结果"
              @filtered="onFiltered">
+      <template slot="lastTime" slot-scope="row">
+        {{row.item.lastTime | dateTimeFormat}}
+      </template>
       <template slot="handle" slot-scope="row">
         <b-button size="sm" @click.stop="info(row.item, $event.target)" class="mr-1 mw">编辑</b-button>
         <b-button size="sm" @click.stop="row.toggleDetails" class="mr-1 mw">{{ row.detailsShowing ? '隐藏' : '查看'}}</b-button>
@@ -42,7 +45,7 @@
         <pre>{{row.item.keywords}}</pre>
         <p>采集结果:</p>
         <b-card>
-          <div v-html="row.item.result"></div>
+          <div v-html="row.item.lastResult"></div>
         </b-card>
         <b-button size="sm mt-2" @click="execCraw(row.item)">再次采集</b-button>
       </template>
@@ -66,7 +69,7 @@
                          :options="typeOptions"
                          required
                          text-field="label"
-                         v-model="modalInfo.content.common.value">
+                         v-model="modalInfo.content.url">
           </b-form-select>
         </b-form-group>
         <b-form-group id="exampleInputGroup2"
@@ -144,10 +147,7 @@
             keywords:{
               keyWord:''
             },
-            common:{
-              value:null,
-
-            },
+            url:'',
           }
         }
       }
@@ -159,13 +159,13 @@
     methods: {
       lookCrawTypes(){
         let self = this;
-        common({type:'craw_type'}).then(function (res) {
+        common({type:'craw_url'}).then(function (res) {
           if(res.code ===1 &&  res.data){
-            self.typeOptions = res.data;
-            this.typeOptions.unshift({
+            res.data.unshift({
               label:'请选择',
               value:null
             });
+            self.typeOptions = res.data;
           }
         });
       },
@@ -173,6 +173,9 @@
         let self =this;
         crawList({id:self.userInfo.id}).then(function (res) {
           if(res.code ===1 &&  res.data){
+            for(let [index,value] of res.data.entries()){
+              res.data[index].keywords = JSON.parse(value.keywords);
+            }
             self.items = res.data;
             self.totalRows = res.data.length;
           }
@@ -185,10 +188,7 @@
           keywords:{
             keyWord:''
           },
-          common:{
-            value:null,
-
-          },
+          url:''
         };
       },
       info(item, button) {
@@ -205,9 +205,9 @@
         evt.preventDefault();
         let self = this;
         let params = {
-          name:self.modalInfo.name,
-          url:self.modalInfo.common.value,
-          keywords:self.modalInfo.keywords,
+          name:self.modalInfo.content.name,
+          url:self.modalInfo.content.url,
+          keywords:JSON.stringify(self.modalInfo.content.keywords),
           lastNick:self.userInfo.nick
         };
         if(self.modalInfo.title === '编辑数据采集'){

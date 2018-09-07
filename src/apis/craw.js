@@ -28,7 +28,7 @@ export function crawList(data) {
  */
 export function crawModify(data) {
   return fetch({
-    url:  'craw/modify',
+    url:  'craw/modifyCraw',
     method: 'post',
     data
   });
