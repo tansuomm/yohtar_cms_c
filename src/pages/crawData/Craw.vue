@@ -230,8 +230,10 @@
           id:item.id,
           lastNick:self.userInfo.nick
         };
-        crawExec(params).then(function () {
-          self.lookCraws();
+        crawExec(params).then(function (res) {
+          if(res.data){
+            item.lastResult = res.data;
+          }
         })
       },
       deleteCraw(id){
