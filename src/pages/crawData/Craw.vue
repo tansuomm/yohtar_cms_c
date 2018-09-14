@@ -24,6 +24,7 @@
     </b-row>
     <b-table show-empty bordered hover
              stacked="md"
+             ref="table"
              :items="items"
              :fields="fields"
              :current-page="currentPage"
@@ -232,7 +233,9 @@
         };
         crawExec(params).then(function (res) {
           if(res.data){
-            item.lastResult = res.data;
+            item.lastTime = res.data.lastTime;
+            item.lastResult = res.data.lastResult;
+            item.lastNick = res.data.lastNick;
           }
         })
       },
