@@ -33,7 +33,7 @@
         <!--<b-form-group id="exampleGroup4">-->
         <!--<b-form-checkbox v-model="checked">记住密码</b-form-checkbox>-->
         <!--</b-form-group>-->
-        <b-button type="submit" class="btn" variant="primary">Sign Up</b-button>
+        <b-button type="submit" class="btn" variant="primary">Sign In</b-button>
       </b-form>
     </b-card>
   </div>
