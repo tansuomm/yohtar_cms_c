@@ -12,28 +12,29 @@
       let data = {
         "particles": {
           "number": {
-            "value": 30,
+            "value": 10,
             "density": {
               "enable": true,
-              "value_area": 500
+              "value_area": 300
             }
           },
           "color": {
-            "value": "#cdff6b"
+            "value": "#2ba3ff"
           },
           "shape": {
-            "type": "star",
+            "type": "image",
             "stroke": {
-              "width": 2,
-              "color": "#ff90db"
+              "width": 1,
+              "color": "#d9ff50"
             },
             "polygon": {
-              "nb_sides": 5
+              "nb_sides": 1
             },
             "image": {
-              "src": "img/github.svg",
-              "width": 100,
-              "height": 100
+              // "src": "img/github.svg",
+              "src": "./static/img/bg-npy.png",
+              "width": 200,
+              "height": 200
             }
           },
           "opacity": {
@@ -41,17 +42,17 @@
             "random": false,
             "anim": {
               "enable": false,
-              "speed": 1,
-              "opacity_min": 0.1,
+              "speed": .5,
+              "opacity_min": .2,
               "sync": false
             }
           },
           "size": {
-            "value": 5,
+            "value": 20,
             "random": true,
             "anim": {
               "enable": true,
-              "speed": 20,
+              "speed": 15,
               "size_min": 0.1,
               "sync": false
             }
