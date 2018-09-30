@@ -19,6 +19,7 @@
                            v-model="bookInfo.content"
                            :rows="8"
                            required
+                           @input="handleChange"
                            :max-rows="12">
           </b-form-textarea>
         </b-form-group>
@@ -42,7 +43,11 @@
         }
       },
       mounted(){
-          this.lookBook();
+          if(localStorage.getItem('history')){
+            this.bookInfo = JSON.parse(localStorage.getItem('history'))
+          }else{
+            this.lookBook();
+          }
       },
       methods:{
           lookBook(){
@@ -62,10 +67,15 @@
               content:self.bookInfo.content,
               nick:self.userInfo.nick
             };
+            localStorage.removeItem('history');
             addBook(params).then(function () {
               self.lookBook();
             })
-          }
+          },
+        handleChange(){
+            console.log(2)
+          localStorage.setItem('history',JSON.stringify(this.bookInfo))
+        }
       }
     }
 </script>

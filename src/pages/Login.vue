@@ -16,6 +16,7 @@
           <b-form-input id="exampleInput1"
                         v-model="loginForm.username"
                         required
+                        autocomplete="on"
                         placeholder="手机号用户名或邮箱">
           </b-form-input>
         </b-form-group>
@@ -26,6 +27,7 @@
           <b-form-input id="exampleInput2"
                         type="password"
                         v-model="loginForm.password"
+                        autocomplete="on"
                         required
                         placeholder="登录密码">
           </b-form-input>
