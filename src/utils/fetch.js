@@ -6,7 +6,7 @@ import { Message } from 'element-ui';
 // 创建axios实例
 const service = axios.create({
   baseURL: process.env.NODE_ENV === 'development' ? '/cms/': '/', // api的base_url
-  timeout: 30000 // 请求超时时间
+  // timeout: 60000 // 请求超时时间
 })
 // request拦截器
 service.interceptors.request.use(config => {

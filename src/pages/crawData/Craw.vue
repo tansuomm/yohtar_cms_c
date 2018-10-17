@@ -48,7 +48,8 @@
         <b-card>
           <div v-html="row.item.lastResult"></div>
         </b-card>
-        <b-button size="sm mt-2" @click="execCraw(row.item)">再次采集</b-button>
+        <b-button v-if="loading" size="sm mt-2">采集中{{time}}s</b-button>
+        <b-button v-if="!loading" size="sm mt-2" @click="execCraw(row.item)">再次采集</b-button>
       </template>
     </b-table>
 
@@ -94,7 +95,8 @@
           </b-form-input>
         </b-form-group>
         <div class="craw-footer">
-          <b-button type="submit" class="btn">采集并保存</b-button>
+          <b-button v-if="!loading1" type="submit" class="btn">采集并保存</b-button>
+          <b-button v-if="loading1" class="btn">采集中{{time}}s</b-button>
         </div>
       </b-form>
     </b-modal>
@@ -108,6 +110,9 @@
     name: "Craw",
     data() {
       return {
+        loading:false,
+        loading1:false,
+        time:0,
         userInfo:JSON.parse(sessionStorage.getItem('user')),
         typeOptions: [],
         crawType: null,
@@ -211,19 +216,45 @@
           keywords:JSON.stringify(self.modalInfo.content.keywords),
           lastNick:self.userInfo.nick
         };
+        for(let value of self.typeOptions){
+          if(self.modalInfo.content.url == value.value){
+            params.tid = value.tid;
+            break;
+          }
+        }
+        self.loading1 = true;
+        let timer = setInterval(function () {
+          self.time += 1;
+        },1000);
         if(self.modalInfo.title === '编辑数据采集'){
           params.id = self.modalInfo.content.id;
           params.lastResult = self.modalInfo.content.lastResult;
           crawModify(params).then(function () {
+            self.time =0;
+            clearInterval(timer)
+            self.loading1 = false;
+            self.$refs.modal.hide();
             self.lookCraws();
+          }).catch(function () {
+            self.time =0;
+            clearInterval(timer)
+            self.loading1 = false;
+            self.$refs.modal.hide();
           });
         }else{
           addCraw(params).then(function () {
+            self.time =0;
+            clearInterval(timer)
+            self.loading1 = false;
+            self.$refs.modal.hide();
             self.lookCraws();
+          }).catch(function () {
+            self.time =0;
+            clearInterval(timer)
+            self.loading1 = false;
+            self.$refs.modal.hide();
           })
         }
-
-        this.$refs.modal.hide()
       },
       execCraw(item){
         let self = this;
@@ -231,12 +262,29 @@
           id:item.id,
           lastNick:self.userInfo.nick
         };
+        for(let value of self.typeOptions){
+          if(item.url == value.value){
+            params.tid = value.tid;
+            break;
+          }
+        }
+        self.loading = true;
+        let timer = setInterval(function () {
+          self.time += 1;
+        },1000);
         crawExec(params).then(function (res) {
+          self.time =0;
+          clearInterval(timer);
+          self.loading = false;
           if(res.data){
             item.lastTime = res.data.lastTime;
             item.lastResult = res.data.lastResult;
             item.lastNick = res.data.lastNick;
           }
+        }).catch(function () {
+          self.time =0;
+          clearInterval(timer);
+          self.loading = false;
         })
       },
       deleteCraw(id){
